@@ -25,7 +25,7 @@ function Auth(props) {
         schemaobj = {
             name: yup.string().required("Enter your name"),
             email: yup.string().required("Enter your valid email").email("Enter your email"),
-            password: yup.string().required("Enter your password"),
+            password: yup.string().required("Enter your password")
         }
         initail = {
             name: '',
@@ -42,7 +42,6 @@ function Auth(props) {
         validationSchema: schema,
 
         onSubmit: values => {
-            alert(JSON.stringify(values, null, 2));
             dispatch(signupAction(values))
         },
 
@@ -94,8 +93,8 @@ function Auth(props) {
                                     null
                                     :
                                     <div className="col-md-4 form-group mt-3 mt-md-0">
-                                        <input type="password" className="form-control" name="password" id="password" placeholder="Your password" />
-                                        <div className="validate" onChange={handleChange} onBlur={handleBlur} />
+                                        <input type="password" className="form-control" name="password" id="password" placeholder="Your password" onChange={handleChange} onBlur={handleBlur}/>
+                                        <div className="validate"  />
                                         <div className="validate" />
                                         <p>{errors.password && errors.password ? errors.password : ''}</p>
                                     </div>

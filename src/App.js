@@ -14,25 +14,29 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Auth from './Container/Auth/Auth';
 import Medician from './Container/Medician/Medician';
 import React, { ThemeProvider } from './Context/ThemeContext';
+import { Provider } from 'react-redux'
+import { store } from './Redux/Store';
 
 function App() {
   return (
     <>
-    <ThemeProvider>
-        <Header />
-        <Switch>
-          <Route path={"/Home"} exact component={Home}></Route>
-          <Route path={"/Department"} exact component={Department}></Route>
-          <Route path={"/Doctor"} exact component={Doctor}></Route>
-          <Route path={"/About"} exact component={About}></Route>
-          <Route path={"/Contact"} exact component={Contact}></Route>
-          <Route path={"/Auth"} exact component={Auth}></Route>
-          <Route path={"/Medician"} exact component={Medician}></Route>
-          <Route path={"/Appointment"} exact component={Appointment}></Route>
-          <Route path={"/ref"} exact component={Ref}></Route>
-        </Switch>
-        <Footer />
+      <Provider store={store}>
+        <ThemeProvider>
+          <Header />
+          <Switch>
+            <Route path={"/Home"} exact component={Home}></Route>
+            <Route path={"/Department"} exact component={Department}></Route>
+            <Route path={"/Doctor"} exact component={Doctor}></Route>
+            <Route path={"/About"} exact component={About}></Route>
+            <Route path={"/Contact"} exact component={Contact}></Route>
+            <Route path={"/Auth"} exact component={Auth}></Route>
+            <Route path={"/Medician"} exact component={Medician}></Route>
+            <Route path={"/Appointment"} exact component={Appointment}></Route>
+            <Route path={"/ref"} exact component={Ref}></Route>
+          </Switch>
+          <Footer />
         </ThemeProvider>
+      </Provider>
     </>
 
   );

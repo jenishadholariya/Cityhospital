@@ -3,6 +3,6 @@ import { signupsaga } from './Auth.saga'
 
 export function* rootsaga(){
     yield all([
-        signupsaga
-    ])
+        signupsaga()
+    ])    
 }
