@@ -19,7 +19,6 @@ function* watchsignup() {
 export function* signupsaga(){
     yield all([
       watchsignup()
-    ]
-    )
+    ])
 }
 
