@@ -6,28 +6,29 @@ export const signupApi = (data) => {
 
     return new Promise((resolve,reject)=>{
         createUserWithEmailAndPassword(auth, data.email, data.password)
-        .then((userCredential) => {
+        .then((userCredential) => {    ;;
             const user = userCredential.user;
             onAuthStateChanged(auth,(user)=>{
+                console.log(user);
                 sendEmailVerification(auth.currentUser)
                 .then(()=>{
-                    console.log("check your email");
+                    resolve({payload:"check your email"});
 
                 })
                 .catch((e)=>{
-                    console.log(e);
+                    reject({payload:e});
                 })
             })
         })
         .catch((error) => {
             const errorCode = error.code;
             const errorMessage = error.message;
-            if(errorCode.localeCompare("auth/email-already-in-use")===0){
-                console.log("email is already exist");
+            if(errorCode.localeCompare("auth/email-already-in-use")==0){
+                reject({payload:"this email is already exist"});
             }else{
-                console.log(errorCode,errorMessage);
+                reject({payload:errorMessage});
             }
-            console.log(errorCode,errorMessage);
+            // console.log(errorCode,errorMessage); 
         });
     })
     
