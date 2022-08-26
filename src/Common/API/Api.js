@@ -2,7 +2,6 @@ import { createUserWithEmailAndPassword, onAuthStateChanged, sendEmailVerificati
 import { auth } from "../../Firebase/Firebase";
 
 export const signupApi = (data) => {
-    // console.log("signupApi", data);
 
     return new Promise((resolve, reject) => {
         createUserWithEmailAndPassword(auth, data.email, data.password)
@@ -25,7 +24,7 @@ export const signupApi = (data) => {
                 const errorCode = error.code;
                 const errorMessage = error.message;
                 if (errorCode.localeCompare("auth/email-already-in-use") === 0) {
-                    resolve({ payload: "this email is already exist" });
+                    reject({ payload: "this email is already exist" });
                 } else {
                     reject({ payload: errorMessage });
                 }
@@ -45,7 +44,8 @@ export const signInApi = (data) => {
                 console.log(user);
 
                 if(user.emailVerified){
-                    resolve({payload:"Email or Password is Wrong"});
+                    reject({payload:"Email or Password is Wrong"});
+                    // console.log("Email or Password is Wrong");
                 }else{
                     reject({payload:"error"});
                 }
@@ -53,10 +53,10 @@ export const signInApi = (data) => {
             .catch((error) => {
                 const errorCode = error.code;
                 const errorMessage = error.message;
-                // console.log(errorCode);
+                console.log(errorCode);
 
                 if (errorCode.localeCompare("auth/email-already-in-use") === 0) {
-                    resolve({ payload: "You are log-in" });
+                    reject({ payload: "You email succesfully"});
                 } else {
                     reject({ payload: errorMessage });
                 }

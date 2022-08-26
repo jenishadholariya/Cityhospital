@@ -1,12 +1,13 @@
 import { call, put, takeEvery, all } from 'redux-saga/effects'
 import { signInApi, signupApi } from '../../Common/API/Api';
+import { SetAlert } from '../Action/Alert.Action';
 import * as ActionType from '../ActionType'
 
 // worker Saga: will be fired on USER_FETCH_REQUESTED actions
 function* signup(action) {
    try {
    
-      const user = yield call(signupApi, action.payload);
+      const user = yield call(signupApi , action.payload);
       console.log(user);
       // yield put({type: "USER_FETCH_SUCCEEDED", user: user});
    } catch (e) {
@@ -17,9 +18,12 @@ function* signup(action) {
 function* signIn(action){
    try{
       const user = yield call(signInApi, action.payload);
+      yield put (SetAlert({text:user.payload , color : "success"}))
       // console.log(user);
       // yield put({type: "USER_FETCH_SUCCEEDED", user: user});
    }catch (e) {
+      yield put (SetAlert({text:e.payload ,  color : "error"}))
+      // console.log(e);
       // yield put({type: "USER_FETCH_FAILED", message: e.message});
    }
 }

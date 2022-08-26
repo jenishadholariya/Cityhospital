@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import { NavLink } from 'react-router-dom';
 import { ThemeContext, theme_context } from '../../Context/ThemeContext';
+import Alert from '../Alert/Alert';
 
 function Header(props) {
     const value = useContext(ThemeContext);
@@ -21,6 +22,7 @@ function Header(props) {
                         <a href="#" className="linkedin"><i className="bi bi-linkedin" /></a>
                     </div>
                     <button onClick={() => value.Toogle_Change(value.theme)}>Change-Theme</button>
+                    <Alert />
                 </div>
             </div>
             <header id="header" className="fixed-top">
