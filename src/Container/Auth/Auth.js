@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import * as yup from 'yup';
 import { Formik, Form, useFormik } from 'formik';
 import { useDispatch } from 'react-redux';
-import { signInAction, signupAction } from '../../Redux/Action/Signup.action';
+import { GooglesignInAction, signInAction, signupAction } from '../../Redux/Action/Signup.action';
 
 function Auth(props) {
     const [user, setUser] = useState('login');
@@ -42,11 +42,19 @@ function Auth(props) {
         validationSchema: schema,
 
         onSubmit: values => {
-            dispatch(signupAction(values))
-            dispatch(signInAction(values))
-        },
+            if (user === "login") {
+                dispatch(signupAction(values))
+            } else {
+                dispatch(signInAction(values))
 
+            }
+        },
+        enableReinitialize:true
     });
+
+    const handlegoogle = () => {
+        dispatch(GooglesignInAction())
+    }
 
     const { handleChange, errors, handleSubmit, handleBlur, touched } = formikObj;
 
@@ -70,7 +78,6 @@ function Auth(props) {
                             {
                                 reset ?
                                     null :
-
                                     user === 'login' ?
                                         null :
                                         <div className="col-md-4 form-group">
@@ -79,7 +86,6 @@ function Auth(props) {
                                             <p>{errors.name && touched.name ? errors.name : ''}</p>
                                         </div>
                             }
-
                         </div>
                         <div className="row">
                             <div className="col-md-4 form-group mt-3 mt-md-0">
@@ -94,8 +100,8 @@ function Auth(props) {
                                     null
                                     :
                                     <div className="col-md-4 form-group mt-3 mt-md-0">
-                                        <input type="password" className="form-control" name="password" id="password" placeholder="Your password" onChange={handleChange} onBlur={handleBlur}/>
-                                        <div className="validate"  />
+                                        <input type="password" className="form-control" name="password" id="password" placeholder="Your password" onChange={handleChange} onBlur={handleBlur} />
+                                        <div className="validate" />
                                         <div className="validate" />
                                         <p>{errors.password && errors.password ? errors.password : ''}</p>
                                     </div>
@@ -107,17 +113,21 @@ function Auth(props) {
                                     <>
                                         <p className='d-inline-block me-2 mt-3'>Already have an account
                                         </p>
-                                        <button type='submit'>Login</button>
+                                        <button onClick={()=>setReset(false)}>Login</button>
                                     </>
                                     :
                                     user === 'login' ?
                                         <>
-                                            <p className='d-inline-block me-2 mt-3'>Create new account</p><button onClick={() => setUser('Signup')}>Sign Up</button>
-                                            <a className='d-block' onClick={() => setReset(true)}>Forget Password...</a>
+                                            <a className='d-inline-block me-2 mt-3'>Create new account</a>
+                                            <button onClick={() => setUser('Signup')}>Sign Up</button>
+                                            <button className='d-block' onClick={() => handlegoogle()}>Sign in Google</button>
+                                            <button className='d-block' onClick={() => setReset(true)}>Forget Password...</button>
                                         </>
                                         :
                                         <>
-                                            <p className='d-inline-block me-2 mt-3'>Already have an account</p><button onClick={() => setUser('login')}>Login</button>
+                                            <p className='d-inline-block me-2 mt-3'>Already have an account</p>
+                                            <button onClick={() => {setUser('login')}}>Login</button>
+
                                         </>
                             }
                         </div>
@@ -135,7 +145,6 @@ function Auth(props) {
                     </Form>
                 </Formik>
             </div>
-
         </section>
     );
 }

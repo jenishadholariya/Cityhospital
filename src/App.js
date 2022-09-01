@@ -15,15 +15,16 @@ import Auth from './Container/Auth/Auth';
 import Medician from './Container/Medician/Medician';
 import React, { ThemeProvider } from './Context/ThemeContext';
 import { Provider } from 'react-redux'
-import { store } from './Redux/Store';
+import { persistor, store } from './Redux/Store';
 import { SnackbarProvider } from 'notistack';
-
+import { PersistGate } from 'redux-persist/integration/react'
 
 function App() {
   return (
     <>
       <SnackbarProvider maxSnack={3}>
         <Provider store={store}>
+        <PersistGate loading={null} persistor={persistor}>
           <ThemeProvider>
             <Header />
             <Switch>
@@ -39,6 +40,7 @@ function App() {
             </Switch>
             <Footer />
           </ThemeProvider>
+          </PersistGate>
         </Provider>
       </SnackbarProvider>
     </>

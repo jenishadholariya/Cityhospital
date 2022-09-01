@@ -1,12 +1,13 @@
-import { createUserWithEmailAndPassword, onAuthStateChanged, sendEmailVerification, signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../../Firebase/Firebase";
+import { createUserWithEmailAndPassword, onAuthStateChanged, sendEmailVerification, signInWithEmailAndPassword, signInWithPopup, signOut } from "firebase/auth";
+import { auth } from "../../Firebase/Firebase"
+import { GoogleAuthProvider } from "firebase/auth";
+
 
 export const signupApi = (data) => {
-
+    console.log("signupApi", data);
     return new Promise((resolve, reject) => {
         createUserWithEmailAndPassword(auth, data.email, data.password)
             .then((userCredential) => {
-                ;;
                 const user = userCredential.user;
                 onAuthStateChanged(auth, (user) => {
                     console.log(user);
@@ -31,7 +32,6 @@ export const signupApi = (data) => {
                 // console.log(errorCode,errorMessage); 
             });
     })
-
 }
 
 export const signInApi = (data) => {
@@ -39,15 +39,14 @@ export const signInApi = (data) => {
 
     return new Promise((resolve, reject) => {
         signInWithEmailAndPassword(auth, data.email, data.password)
-            .then((userCredential) => { 
+            .then((userCredential) => {
                 const user = userCredential.user;
                 console.log(user);
-
-                if(user.emailVerified){
-                    reject({payload:"Email or Password is Wrong"});
+                if (user.emailVerified) {
+                    resolve({ payload: user });
                     // console.log("Email or Password is Wrong");
-                }else{
-                    reject({payload:"error"});
+                } else {
+                    reject({ payload: "error" });
                 }
             })
             .catch((error) => {
@@ -56,10 +55,49 @@ export const signInApi = (data) => {
                 console.log(errorCode);
 
                 if (errorCode.localeCompare("auth/email-already-in-use") === 0) {
-                    reject({ payload: "You email succesfully"});
+                    reject({ payload: "You email succesfully" });
                 } else {
                     reject({ payload: errorMessage });
                 }
+            });
+    })
+}
+
+export const logoutApi = () => {
+    return new Promise((resolve, reject) => {
+        signOut(auth)
+            .then((userCredential) => {
+                const user = userCredential.user;
+                console.log(user);
+                resolve({ payload: "logout successfull" })
+            })
+            .catch((error) => {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+
+                reject(errorCode);
+            })
+    })
+}
+
+export const GoogleSignInAPI = () => {
+    return new Promise((resolve, reject) => {
+        const provider = new GoogleAuthProvider();
+        signInWithPopup(auth, provider)
+            .then((result) => {
+                const credential = GoogleAuthProvider.credentialFromResult(result);
+                const token = credential.accessToken;
+                const user = result.user;
+
+                resolve({payload:user})
+            })
+            .catch((error) => {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                const email = error.customData.email;
+                const credential = GoogleAuthProvider.credentialFromError(error);
+
+                reject({payload : error})
             });
     })
 }

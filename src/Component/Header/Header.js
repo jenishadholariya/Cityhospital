@@ -1,12 +1,21 @@
 import React, { useContext } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import { ThemeContext, theme_context } from '../../Context/ThemeContext';
+import { logoutAction } from '../../Redux/Action/Signup.action';
 import Alert from '../Alert/Alert';
 
 function Header(props) {
     const value = useContext(ThemeContext);
 
-    console.log(value);
+    const auth = useSelector(state => state.auth)
+
+    const dispatch = useDispatch();
+
+    const handlelogout = () => {
+        dispatch(logoutAction())
+    }
+
     return (
         <div className="main-header">
             <div id="topbar" className={`d-flex align-items-center fixed-top ${value.theme}`}>
@@ -29,14 +38,14 @@ function Header(props) {
                 <div className="container d-flex align-items-center">
                     <div className="logo">
                         <a href="index.html">
-                            <h1 className="logo me-auto">City</h1><br/>
+                            <h1 className="logo me-auto">City</h1><br />
                             <h2 className="logo-tiny-text me-auto">Multispeciality Hospital</h2>
                         </a>
                     </div>
 
                     <nav id="navbar" className="navbar order-last order-lg-0">
                         <ul>
-                            <li><NavLink className="nav-link scrollto active" to="Home">Home</NavLink></li>
+                            <li><NavLink className="nav-link scrollto active" to="/Home">Home</NavLink></li>
                             <li><NavLink className="nav-link scrollto" to="/Department">Departments</NavLink></li>
                             <li><NavLink className="nav-link scrollto" to="/Doctor">Doctors</NavLink></li>
                             <li>
@@ -49,14 +58,20 @@ function Header(props) {
                     </nav>
                     <NavLink href="./pages/appointment.html" className="appointment-btn scrollto" to={"/Appointment"}><span className="d-none d-md-inline">Make an</span>
                         Appointment</NavLink>
-                    <NavLink href="#" className="appointment-btn scrollto" to={"/Auth"}>
-                        <span className="d-none d-md-inline">Login/ Signup</span>
-                    </NavLink>
-                    
+
+                    {
+                        auth.user === null ?
+                            <NavLink href="#" className="appointment-btn scrollto" to={"/Auth"}>
+                                <span className="d-none d-md-inline">Login/ Signup</span>
+                            </NavLink>
+                            :
+                            <NavLink href="#" className="appointment-btn scrollto" to={"/Auth"} onClick={()=>handlelogout()}>
+                                <span className="d-none d-md-inline">Logout</span>
+                            </NavLink>
+                        }
                 </div>
             </header>
         </div>
-
     );
 }
 
