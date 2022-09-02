@@ -23,3 +23,7 @@ export const logoutedAction = () => (dispatch) => {
 export const GooglesignInAction = () => (dispatch) => {
     dispatch({type:ActionType.GOOGLESIGNIN_ACTION})
 }
+
+export const ForgetPasswordAction = () => (dispatch) => {
+    dispatch({type:ActionType.FORGET_PASSWORD})
+}

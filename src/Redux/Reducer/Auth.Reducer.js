@@ -22,6 +22,12 @@ export const AuthReducer = (state = initval, action) => {
                 user: null,
                 isloading: false
             }
+        case ActionType.FORGET_PASSWORD:
+            return{
+                ...state,
+                error:'',
+                isloading:false
+            }
         default:
             return state
     }

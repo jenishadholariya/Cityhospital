@@ -55,6 +55,14 @@ function* GoogleSignIN(action){
    }
 }
 
+function* Forgetpassword(action){
+   try{
+      yield put (SetAlert({text:"Forget password successfully" , color : "success"}))
+   }catch (e){
+      yield put (SetAlert({text:e.payload ,  color : "error"}))
+   }
+}
+
 function* watchsignup() {
   yield takeEvery(ActionType.SIGNUP_ACTION, signup);
 }
@@ -71,12 +79,17 @@ function* watchlogout(){
    yield takeEvery(ActionType.LOGOUT_ACTION,logout)
 }
 
+function* watchForget(){
+   yield takeEvery(ActionType.FORGET_PASSWORD,Forgetpassword)
+}
+
 export function* Authsaga(){
     yield all([
       watchsignup(),
       watchsignIn(),
       watchlogout(),
-      watchGooglesignIn()
+      watchGooglesignIn(),
+      watchForget()
     ])
 }
 
