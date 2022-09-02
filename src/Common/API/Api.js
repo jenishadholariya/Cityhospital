@@ -101,3 +101,9 @@ export const GoogleSignInAPI = () => {
             });
     })
 }
+
+export const ForgetAPI = () => {
+    return new Promise((resolve,reject) => {
+        
+    })
+}

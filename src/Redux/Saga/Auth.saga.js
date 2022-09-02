@@ -57,6 +57,7 @@ function* GoogleSignIN(action){
 
 function* Forgetpassword(action){
    try{
+      const user = yield call()
       yield put (SetAlert({text:"Forget password successfully" , color : "success"}))
    }catch (e){
       yield put (SetAlert({text:e.payload ,  color : "error"}))

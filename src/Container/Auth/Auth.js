@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import * as yup from 'yup';
 import { Formik, Form, useFormik } from 'formik';
 import { useDispatch } from 'react-redux';
-import { GooglesignInAction, signInAction, signupAction } from '../../Redux/Action/Signup.action';
+import { ForgetPasswordAction, GooglesignInAction, signInAction, signupAction } from '../../Redux/Action/Signup.action';
 
 function Auth(props) {
     const [user, setUser] = useState('login');
@@ -43,10 +43,10 @@ function Auth(props) {
 
         onSubmit: values => {
             if (user === "login") {
-                dispatch(signupAction(values))
-            } else {
                 dispatch(signInAction(values))
-
+            } else {
+                dispatch(signupAction(values))
+                dispatch(ForgetPasswordAction())
             }
         },
         enableReinitialize:true
